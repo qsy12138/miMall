@@ -5,15 +5,23 @@
 </template>
 
 <script>
-import storage from './storage/index'
 export default {
   name: 'App',
   components: {
     
   },
+  data() {
+    return {
+      res:{}
+    }
+  },
   mounted(){
-    //storage.setItem('a',1)
-    storage.clear('a')
+    // this.axios.get('/mock/user/login.json').then((res)=>{ //本地加载请求静态JSON文件的形式调用mock
+    //   this.res = res
+    // })
+    this.axios.get('/mock/user/login.json').then((res)=>{ //使用mockjs的方法请求模拟数据
+      this.res = res
+    })
   }
 }
 </script>

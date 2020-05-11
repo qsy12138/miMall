@@ -11,14 +11,14 @@ import OrderList from './pages/orderList'
 import OrderPay from './pages/orderPay'
 import AliPay from './pages/aliPay'
 
-Vue.use(Router);
+Vue.use(Router); //固定写法加载路由插件
 
 export default new Router({
     routes: [{
             path: '/',
             name: 'home',
             component: Home,
-            redirect:'/index',
+            redirect: '/index',
             children: [{
                     path: '/index',
                     name: 'index',
@@ -60,7 +60,7 @@ export default new Router({
                 path: 'alipay',
                 name: 'alipay',
                 component: AliPay,
-            },]
+            }, ]
         }
     ]
 });
