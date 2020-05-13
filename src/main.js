@@ -2,6 +2,11 @@ import Vue from 'vue'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueLazyLoad from 'vue-lazyload'
+import VueCookie from 'vue-cookie'
+import { Message }  from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import store from './store'
 import App from './App.vue'
 
 //MockJs开关，当我们使用mockjs的方法时，必须要配置该方法
@@ -16,20 +21,33 @@ axios.defaults.timeout = 8000 //默认的请求超时时间
 
 //接口错误拦截
 axios.interceptors.response.use(function (response) { 
-  let res = response.data;
+  let res = response.data
+  let path = location.hash
   if(res.status == 0){
     return res.data
   }else if(res.status == 10){ //当未登录时
-    window.location.href = '/#/login'
+    if(path !='#/index'){
+      if(path !='#/index'){
+        window.location.href = '/#/login'
+      }
+      return Promise.reject(res)
+    }
   }else{
-    alert(res.msg)
+    Message.warning(res.msg)
+    return Promise.reject(res)
   }
  })
 
 Vue.use(VueAxios,axios)
+Vue.use(VueCookie)
+Vue.use(VueLazyLoad,{
+  loading:'/imgs/loading-svg/loading-bars.svg'
+})
 Vue.config.productionTip = false
+Vue.prototype.$message = Message
 
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')

@@ -13,7 +13,7 @@
                     <a href="javascript:;" v-else @click="login">登录</a>
                     <a href="javascript:;" v-if="username">我的订单</a>
                     <a href="javascript:;" v-else>注册</a>
-                    <a href="javascript:;" class="my-cart" @click="goToCart"><span class="icon-cart"></span>购物车</a>
+                    <a href="javascript:;" class="my-cart" @click="goToCart"><span class="icon-cart"></span>购物车({{cartCount}})</a>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
                                 <li class="product" v-for="(item,index) in phoneList" :key="index">
                                     <a :href="'/#/product/'+item.id" target="_blank">
                                         <div class="pro-img">
-                                            <img :src="item.mainImage" alt="">
+                                            <img v-lazy="item.mainImage" alt="">
                                         </div>
                                         <div class="pro-name">{{item.name}}</div>
                                         <div class="pro-price">{{item.price}}</div>
@@ -49,7 +49,7 @@
                                 <li class="product">
                                     <a href="javascript:;" target="_blank">
                                         <div class="pro-img">
-                                            <img src="/imgs/nav-img/nav-3-1.jpg" alt="">
+                                            <img v-lazy="'/imgs/nav-img/nav-3-1.jpg'" alt="">
                                         </div>
                                         <div class="pro-name">小米壁画电视 68英寸</div>
                                         <div class="pro-price">6999元</div>
@@ -58,7 +58,7 @@
                                 <li class="product">
                                     <a href="javascript:;" target="_blank">
                                         <div class="pro-img">
-                                            <img src="/imgs/nav-img/nav-3-2.jpg" alt="">
+                                            <img v-lazy="'/imgs/nav-img/nav-3-2.jpg'" alt="">
                                         </div>
                                         <div class="pro-name">小米CC4</div>
                                         <div class="pro-price">1799元</div>
@@ -67,7 +67,7 @@
                                 <li class="product">
                                     <a href="javascript:;" target="_blank">
                                         <div class="pro-img">
-                                            <img src="/imgs/nav-img/nav-3-3.png" alt="">
+                                            <img v-lazy="'/imgs/nav-img/nav-3-3.png'" alt="">
                                         </div>
                                         <div class="pro-name">小米CC4</div>
                                         <div class="pro-price">1799元</div>
@@ -76,7 +76,7 @@
                                 <li class="product">
                                     <a href="javascript:;" target="_blank">
                                         <div class="pro-img">
-                                            <img src="/imgs/nav-img/nav-3-4.jpg" alt="">
+                                            <img v-lazy="'/imgs/nav-img/nav-3-4.jpg'" alt="">
                                         </div>
                                         <div class="pro-name">小米CC4</div>
                                         <div class="pro-price">1799元</div>
@@ -85,7 +85,7 @@
                                 <li class="product">
                                     <a href="javascript:;" target="_blank">
                                         <div class="pro-img">
-                                            <img src="/imgs/nav-img/nav-3-5.jpg" alt="">
+                                            <img v-lazy="'/imgs/nav-img/nav-3-5.jpg'" alt="">
                                         </div>
                                         <div class="pro-name">小米CC4</div>
                                         <div class="pro-price">1799元</div>
@@ -94,7 +94,7 @@
                                 <li class="product">
                                     <a href="javascript:;" target="_blank">
                                         <div class="pro-img">
-                                            <img src="/imgs/nav-img/nav-3-6.png" alt="">
+                                            <img v-lazy="'/imgs/nav-img/nav-3-6.png'" alt="">
                                         </div>
                                         <div class="pro-name">小米CC4</div>
                                         <div class="pro-price">1799元</div>
@@ -120,8 +120,15 @@
         name: 'nav-header',
         data() {
             return {
-                username:'jack',
                 phoneList:[]
+            }
+        },
+        computed: {
+            username(){
+                return this.$store.state.username
+            },
+            cartCount(){
+                return this.$store.state.cartCount
             }
         },
         mounted(){
@@ -175,7 +182,7 @@
                     background-color: #FF6600;
                     text-align: center;
                     color: #ffffff;
-
+                    margin-right: 0px;
                     .icon-cart {
                         @include bgImg(16px,12px,'/imgs/icon-cart-checked.png');
                         margin-right: 4px;
@@ -190,34 +197,7 @@
                 height: 112px;
                 @include flex();
 
-                .header-logo {
-                    display: inline-block;
-                    width: 55px;
-                    height: 55px;
-                    background-color: #FF6600;
-
-                    a {
-                        display: inline-block;
-                        width: 110px;
-                        height: 55px;
-
-                        &:before {
-                            content: '';
-                            @include bgImg(55px,55px,'/imgs/mi-logo.png',55px);
-                            transition: margin .2s;
-                        }
-
-                        &:after {
-                            content: '';
-                            @include bgImg(55px,55px,'/imgs/mi-home.png',55px);
-                        }
-
-                        &:hover:before {
-                            margin-left: -55px;
-                            transition: margin .2s;
-                        }
-                    }
-                }
+                
                 .header-menu {
                     display: inline-block;
                     width: 643px;

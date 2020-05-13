@@ -10,7 +10,6 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
-    "element-ui": "^2.13.1",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "swiper": "^5.3.8",
@@ -27,8 +26,14 @@
     "@vue/cli-plugin-eslint": "~4.3.0",
     "@vue/cli-service": "~4.3.0",
     "babel-eslint": "^10.1.0",
+    "babel-helper-vue-jsx-merge-props": "^2.0.3",
+    "babel-plugin-component": "^1.1.1",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
+    "element-ui": "^2.13.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "install": "^0.13.0",
     "mockjs": "^1.1.0",
     "vue-template-compiler": "^2.6.11"
   },
