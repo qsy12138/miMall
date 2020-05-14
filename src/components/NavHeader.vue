@@ -10,10 +10,12 @@
                 </div>
                 <div class="topbarUser">
                     <a href="javascript:;" v-if="username">{{username}}</a>
-                    <a href="javascript:;" v-else @click="login">登录</a>
+                    <a href="javascript:;" v-if="!username" @click="login">登录</a>
+                    <a href="javascript:;" v-if="username" @click="logout">退出</a>
                     <a href="javascript:;" v-if="username">我的订单</a>
                     <a href="javascript:;" v-else>注册</a>
-                    <a href="javascript:;" class="my-cart" @click="goToCart"><span class="icon-cart"></span>购物车({{cartCount}})</a>
+                    <a href="javascript:;" class="my-cart" @click="goToCart"><span
+                            class="icon-cart"></span>购物车({{cartCount}})</a>
                 </div>
             </div>
         </div>
@@ -120,36 +122,54 @@
         name: 'nav-header',
         data() {
             return {
-                phoneList:[]
+                phoneList: []
             }
         },
         computed: {
-            username(){
+            username() {
                 return this.$store.state.username
             },
-            cartCount(){
+            cartCount() {
                 return this.$store.state.cartCount
             }
         },
-        mounted(){
+        mounted() {
             this.getProductList()
+            if(this.$route.params && this.$route.params == 'login'){
+                this.getCartCount()
+            }
         },
         methods: {
-            login(){
+            login() {
                 this.$router.push('/login')
             },
-            getProductList(){
-                this.axios.get('/products',{
-                    params:{
-                        categoryId:'100012'
+            logout() {
+                this.axios.post('/user/logout', ).then(() => {
+                    this.$message.success('退出成功')
+                    this.$cookie.set('userId', '', {
+                        expires: '-1'
+                    })
+                    this.$store.dispatch('saveUserName', '')
+                    this.$store.dispatch('saveCartCount', 0)
+                })
+            },
+            getCartCount() {
+                    this.axios.get('/carts/products/sum').then((res = 0) => {
+                        this.$store.dispatch('saveCartCount', res)
+                    })
+            },
+            getProductList() {
+                this.axios.get('/products', {
+                    params: {
+                        categoryId: '100012'
                     }
-                }).then((res)=>{
-                    if(res.list.length>6){
-                        this.phoneList = res.list.slice(0,6)
+                }).then((res) => {
+                    if (res.list.length > 6) {
+                        this.phoneList = res.list.slice(0, 6)
                     }
                 })
             },
-            goToCart(){
+            goToCart() {
                 this.$router.push('/cart')
             }
         },
@@ -183,8 +203,9 @@
                     text-align: center;
                     color: #ffffff;
                     margin-right: 0px;
+
                     .icon-cart {
-                        @include bgImg(16px,12px,'/imgs/icon-cart-checked.png');
+                        @include bgImg(16px, 12px, '/imgs/icon-cart-checked.png');
                         margin-right: 4px;
                     }
                 }
@@ -197,7 +218,7 @@
                 height: 112px;
                 @include flex();
 
-                
+
                 .header-menu {
                     display: inline-block;
                     width: 643px;
@@ -217,12 +238,14 @@
 
                         &:hover {
                             color: $colorA;
-                            .children{
+
+                            .children {
                                 height: 220px;
                                 opacity: 1;
                             }
                         }
-                        .children{
+
+                        .children {
                             position: absolute;
                             top: 112px;
                             left: 0;
@@ -231,11 +254,12 @@
                             opacity: 0;
                             overflow: hidden;
                             border-top: 1px solid #E5E5E5;
-                            box-shadow: 0px 7px 6px 0px rgba(0,0,0,0.11);
+                            box-shadow: 0px 7px 6px 0px rgba(0, 0, 0, 0.11);
                             z-index: 10;
                             transition: all .5s;
                             background-color: #ffffff;
-                            .product{
+
+                            .product {
                                 position: relative;
                                 float: left;
                                 width: 16.6%;
@@ -243,27 +267,33 @@
                                 font-size: 12px;
                                 line-height: 12px;
                                 text-align: center;
-                                a{
+
+                                a {
                                     display: inline-block;
                                 }
-                                img{
+
+                                img {
                                     width: auto;
                                     height: 111px;
                                     margin-top: 26px;
                                 }
-                                .pro-img{
+
+                                .pro-img {
                                     height: 137px;
                                 }
-                                .pro-name{
+
+                                .pro-name {
                                     font-weight: bold;
                                     margin-top: 19px;
                                     margin-bottom: 8px;
-                                    color:$colorB;
+                                    color: $colorB;
                                 }
-                                .pro-price{
+
+                                .pro-price {
                                     color: $colorA;
                                 }
-                                &:before{
+
+                                &:before {
                                     content: '';
                                     position: absolute;
                                     top: 28px;
@@ -272,13 +302,15 @@
                                     height: 100px;
                                     width: 1px;
                                 }
-                                &:last-child:before{
+
+                                &:last-child:before {
                                     display: none;
                                 }
                             }
                         }
                     }
                 }
+
                 .header-search {
                     width: 319px;
 
@@ -298,7 +330,7 @@
                         }
 
                         a {
-                            @include bgImg(18px,18px,'/imgs/icon-search.png');
+                            @include bgImg(18px, 18px, '/imgs/icon-search.png');
                             margin-left: 17px;
                         }
                     }
@@ -306,6 +338,6 @@
             }
         }
 
-        
+
     }
 </style>
